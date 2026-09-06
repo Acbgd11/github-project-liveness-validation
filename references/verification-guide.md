@@ -34,9 +34,43 @@
 
 时间是风险信号而不是通用裁决。不要用“超过六个月必死”或“两个星期内更新必可用”代替证据。
 
+可用以下时间信号做快速初筛；它们不是自动判死规则，最终结论仍以仓库、Issue 和环境证据为准：
+
+| 项目类型 | 时间信号 | 下一步 |
+|---|---|---|
+| 爬虫、下载器、签名、网站逆向、API 适配 | 默认分支约 1 个月无有效维护 | 提高风险；查近期失效反馈、维护者回应和依赖服务状态 |
+| 同类高变化项目 | 默认分支约 3 个月无有效维护 | 必须找到近期成功使用或修复证据；若同时有未解决失效反馈，通常不建议推荐 |
+| 稳定 CLI、数据处理库、规范类 | 约 6 个月无有效维护 | 查 Issue、依赖兼容性和用户环境；无异常时仍可谨慎推荐 |
+| 任何类型 | Archived、作者明确弃用，或 README 自述关键功能失效 | 不建议使用旧项目；需要时寻找迁移目标 |
+
 ## 建议的证据来源
 
 优先使用 GitHub 仓库主页、默认分支提交记录、Release、README、Issue/Discussion 和作者公告。可用 GitHub API、网页或官方文档获取这些数据。搜索结果摘要只能用于发现候选，不能作为最终证据。
+
+## 可选的 GitHub API 取证方式
+
+优先使用已可用的 GitHub 页面、API 或工具；以下 `curl` 仅是没有专用工具时的备用方式。先从仓库元数据取得实际的 `default_branch`，再代入后续请求；不要假设每个仓库都使用 `main`。
+
+```bash
+# 仓库元数据：看 default_branch、pushed_at、archived 与描述
+curl -s "https://api.github.com/repos/{owner}/{repo}" \
+  | grep -E '"(default_branch|pushed_at|created_at|archived|stargazers_count|open_issues_count|description)"'
+
+# 最近 Issue（含已关闭）：看真实使用反馈；响应也可能包含 Pull Request，需区分 pull_request 字段
+curl -s "https://api.github.com/repos/{owner}/{repo}/issues?state=all&per_page=20" \
+  | grep -E '"(title|state|created_at)"'
+
+# README：用实际默认分支替换 {default_branch}，找免责声明和失效自述
+curl -s "https://api.github.com/repos/{owner}/{repo}/readme?ref={default_branch}"
+
+# 默认分支最近提交：区分核心代码修复与文档/机器人提交
+curl -s "https://api.github.com/repos/{owner}/{repo}/commits?sha={default_branch}&per_page=5" \
+  | grep -E '"(date|message)"'
+```
+
+⚠️ **关键陷阱：`updated_at` ≠ `pushed_at`。** `updated_at` 会因 Star、Issue 等活动刷新；`pushed_at` 也可能只是其他分支、标签或非核心文件发生变化。判断维护状态应同时查看 `pushed_at`、默认分支最近提交的改动范围，以及 Release/Issue 证据。
+
+若访问 GitHub 受限，只能使用当前环境已确认可用的网络配置；不要在通用 Skill 中硬编码某台机器的本地代理地址，也不要把加速镜像作为最终证据来源。
 
 ## 输出模板
 
