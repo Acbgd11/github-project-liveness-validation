@@ -1,3 +1,4 @@
 interface:
-  display_name: "GitHub苹果存活验证规则"
-  short_description: "验证 GitHub 项目是否仍在维护、可用且适合当前需求"
+  display_name: "GitHub苹果存活验证规则 v1.2"
+  short_description: "按项目类型核验 GitHub 维护、可用性与环境适配，给出证据和置信度"
+  default_prompt: "使用 $github-project-liveness-validation 核验候选 GitHub 项目，给出证据、置信度、红旗和适配结论。"
