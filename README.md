@@ -8,6 +8,12 @@
 
 让智能体读取 `SKILL.md`，提供用途、候选仓库以及已知的环境/版本约束。支持 Agent Skills 的宿主可将整个文件夹放进其技能目录；具体路径遵循该宿主的说明。不支持自动发现时，也可以直接提供入口和相对引用文件。
 
+公开仓库：`Acbgd11/github-project-liveness-validation`。可把 [仓库地址](https://github.com/Acbgd11/github-project-liveness-validation) 发给其他智能体，让它直接下载整个仓库并读取 `SKILL.md`。有 Git 的环境可运行：
+
+```bash
+git clone https://github.com/Acbgd11/github-project-liveness-validation.git
+```
+
 核心文件是普通 Markdown，无必需脚本、Token、付费服务或第三方工具依赖。`agents/openai.yaml` 仅提供 Codex 显示信息，其他宿主可忽略。网页/API 不可用时应说明证据不足。
 
 Codex 调用示例：
@@ -23,6 +29,7 @@ Codex 调用示例：
 - [输出格式](references/report-format.md)：短报告、比较表和可选 JSON 交接格式。
 - [参考方法](references/method-sources.md)：借鉴来源、当次状态快照及不能直接照搬的部分。
 - [agents/openai.yaml](agents/openai.yaml)：Codex 显示名称与默认调用提示。
+- [LICENSE](LICENSE)：MIT 许可，允许保留版权及许可声明后使用、修改与再分发。
 
 ## 从旧版保留与升级
 

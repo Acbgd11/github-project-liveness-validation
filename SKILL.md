@@ -1,6 +1,7 @@
 ---
 name: github-project-liveness-validation
 description: 在寻找、推荐、比较或采用 GitHub 项目、依赖、工具、Skill 和插件前，按项目类型核验维护状态、目标功能可用性及用户环境适配，给出带证据和置信度的结论；不用于仅解释代码或历史背景。
+license: MIT
 metadata:
   version: "1.2"
 ---
